@@ -182,7 +182,7 @@ class MysqlAdapter extends PdoAdapter implements AdapterInterface
     public function hasTable($tableName)
     {
         $options = $this->getOptions();
-
+        //this information_schema call should be replaced (and probably could just be a "desc $tableName";
         $exists = $this->fetchRow(sprintf(
             "SELECT TABLE_NAME
             FROM INFORMATION_SCHEMA.TABLES
@@ -628,6 +628,8 @@ class MysqlAdapter extends PdoAdapter implements AdapterInterface
     protected function getForeignKeys($tableName)
     {
         $foreignKeys = array();
+        //this function should throw an exception. There's no good way to get the list of foreign keys.
+        //unless you're ambitious, and want to use show create table, and then parse SQL
         $rows = $this->fetchAll(sprintf(
             "SELECT
               CONSTRAINT_NAME,
@@ -692,6 +694,7 @@ class MysqlAdapter extends PdoAdapter implements AdapterInterface
             return;
         } else {
             foreach ($columns as $column) {
+                //throw an exception here
                 $rows = $this->fetchAll(sprintf(
                     "SELECT
                         CONSTRAINT_NAME
@@ -956,6 +959,7 @@ class MysqlAdapter extends PdoAdapter implements AdapterInterface
      */
     public function hasDatabase($name)
     {
+        //probably better to use "show databases like '$name'"
         $rows = $this->fetchAll(
             sprintf(
                 'SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = \'%s\'',
@@ -1082,7 +1086,7 @@ class MysqlAdapter extends PdoAdapter implements AdapterInterface
     public function describeTable($tableName)
     {
         $options = $this->getOptions();
-
+        //probably throw an exception
         // mysql specific
         $sql = sprintf(
             "SELECT *
