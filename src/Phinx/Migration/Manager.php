@@ -161,7 +161,7 @@ class Manager
 
         // are we migrating up or down?
         $direction = $version > $current ? MigrationInterface::UP : MigrationInterface::DOWN;
-
+        //put this in a try { } finally { } with the disconnect in the finally block.
         if ($direction == MigrationInterface::DOWN) {
             // run downs first
             krsort($migrations);
