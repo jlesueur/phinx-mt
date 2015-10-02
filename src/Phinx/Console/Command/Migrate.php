@@ -82,6 +82,8 @@ EOT
                 $this->execute($input, $output);
             }
             $endAll = microtime(true);
+            //use $errors to display a report of errors. Work with Jon P. to see what would be most useful to him
+            //he mentioned dumping the error report to a file as well.
             $output->writeln('<comment>All databases complete. Took ' . sprintf('%.4fs', $endAll - $startAll) . '</comment>');
             return;
         }
@@ -122,6 +124,7 @@ EOT
             $output->writeln('<error>  --== ERROR ==--  </error> skipping :' . $message);
             $errors[$environment][] = $message;
         }
+        //figure out a way to return $errors to the calling function (which may be a recursive call). Perhaps as a third optional argument? perhaps as just a return?
         $end = microtime(true);
 
         $output->writeln('');
